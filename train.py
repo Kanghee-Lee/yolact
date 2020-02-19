@@ -250,7 +250,8 @@ def train():
                                   num_workers=args.num_workers,
                                   shuffle=True, collate_fn=detection_collate,
                                   pin_memory=True)
-    
+    print('-'*20, 'data_loader 출력', '-'*20)
+    print(data_loader)
     
     save_path = lambda epoch, iteration: SavePath(cfg.name, epoch, iteration).get_path(root=args.save_folder)
     time_avg = MovingAverage()
