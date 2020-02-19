@@ -264,20 +264,20 @@ def train():
                                   pin_memory=True)
     print('-'*20, 'data_loader 출력', '-'*20)
     try:  # Use try-except to use ctrl+c to stop and save early.
-    while training:
-        for i, datum in enumerate(data_loader):
-            if cfg.warmup_until > 0 and step <= cfg.warmup_until:  # Warm up learning rate.
-                set_lr(optimizer, (cfg.lr - cfg.warmup_init) * (step / cfg.warmup_until) + cfg.warmup_init)
+        while training:
+            for i, datum in enumerate(data_loader):
+                if cfg.warmup_until > 0 and step <= cfg.warmup_until:  # Warm up learning rate.
+                    set_lr(optimizer, (cfg.lr - cfg.warmup_init) * (step / cfg.warmup_until) + cfg.warmup_init)
 
-            # Adjust the learning rate according to the current step.
-            while step_index < len(cfg.lr_steps) and step >= cfg.lr_steps[step_index]:
-                step_index += 1
-                set_lr(optimizer, cfg.lr * (0.1 ** step_index))
+                # Adjust the learning rate according to the current step.
+                while step_index < len(cfg.lr_steps) and step >= cfg.lr_steps[step_index]:
+                    step_index += 1
+                    set_lr(optimizer, cfg.lr * (0.1 ** step_index))
 
-            images, box_classes, masks_gt, num_crowds = data_to_device(datum)
-            print('box_classes'*10)
-            print(box_classes)
-    print(data_loader)
+                images, box_classes, masks_gt, num_crowds = data_to_device(datum)
+                print('box_classes'*10)
+                print(box_classes)
+        print(data_loader)
     
     save_path = lambda epoch, iteration: SavePath(cfg.name, epoch, iteration).get_path(root=args.save_folder)
     time_avg = MovingAverage()
